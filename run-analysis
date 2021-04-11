@@ -1,0 +1,28 @@
+#! /bin/bash
+
+if [  $# -le 1 ];
+	then 
+		echo "error: input argument less than 2"
+		exit 1
+	fi
+
+pages=$2
+
+fileout=$1
+
+touch fileout
+
+while read -r line;
+    do
+        echo -e "Performing byte-size measurement on \n $line"
+        num=$(echo "$line" | grep -o -E '[0-9][0-9][0-9]')
+        result=$(./perform-measurement "$line")
+        "$num $result" >> fileout
+        if curl --output /dev/null --silent --head --fail $line; then
+            echo "...successful"
+        else 
+            echo "...failure"
+        fi
+    done < $pages
+
+exit 0

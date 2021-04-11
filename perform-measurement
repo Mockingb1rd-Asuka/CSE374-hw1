@@ -1,0 +1,24 @@
+#! /bin/bash
+
+if [  $# -le 0 ];
+	then 
+		echo "argument needed"
+		exit 1
+	fi
+
+touch tempfile
+if curl --output /dev/null --silent --head --fail "$1"; then
+  	wget -O tempfile $1
+
+	#(curl -sI $1) >> tempfile
+
+	wc -c < tempfile
+
+	#file_size="$(curl -s -o/dev/null -w '%{size_download}' "$url")"
+
+	#echo $file_size
+else
+	echo 0
+fi
+
+	exit 0

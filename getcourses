@@ -1,0 +1,32 @@
+#! /bin/bash
+
+if [  $# -le 1 ];
+	then 
+		echo "error: input argument less than 2"
+		exit 1
+	fi
+
+
+if [ ! -f $1 ];
+    then
+        touch $1
+    fi
+
+if [ ! -f $2 ];
+    then
+        echo "error: file as input does not exist"
+        exit 1
+    fi
+
+webpage=$2
+
+prefix="(http|https)"
+body="://courses.cs.washington.edu/courses/cse"
+
+(grep '<div class="course-listing"><span class="course-listing-title"><a href=' $webpage | grep -E -o "$prefix$body[0-9][0-9][0-9]/" | sed "s/$/20su\//") >> $1
+
+
+#(grep -E -o "$prefix$body[0-9][0-9][0-9]/" $webpage  | sed "s/$/20su\//") >> $1
+
+
+exit 0
